@@ -1,0 +1,87 @@
+﻿@using Pheko.WebPresentation.ViewModels;
+@using Pheko.WebPresentation.Utility;
+
+@model SearchPatientViewModel
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-4 col-md-3 col-sm-2 col-xs-12">
+
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-8 col-xs-12">
+            <form name="PatientSearch" data-url="@Url.Action("LoadPatients", "PatientManagement", new { ReturnUrl = Request.QueryString["ReturnUrl"], area = "PatientManagement" })"
+                  ng-submit="search()" id="frmPatientSearch">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Search For A Patient</div>
+                    <div class="panel-body">
+                        <div class="formcontent container-fluid" id="divPatientSearch">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.PatientId, new { @class = "col-sm-3 col-xs-12 control-label" })
+                                <div class="col-sm-9 col-xs-12">
+                                    <div class="col-sm-12 col-xs-12">
+                                        @Html.TextBoxFor(model => model.PatientId, new { @class = "form-control", ng_model = "model.PatientId", placeholder = "Enter Patient Id" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.FirstName, new { @class = "col-sm-3 col-xs-12 control-label" })
+                                <div class="col-sm-9 col-xs-12">
+                                    <div class="col-xs-12">
+                                        @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control", ng_model = "model.FirstName", placeholder = "Enter FirstName" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.LastName, new { @class = "col-sm-3 col-xs-12 control-label" })
+                                <div class="col-sm-9 col-xs-12">
+                                    <div class="col-xs-12">
+                                        @Html.TextBoxFor(model => model.LastName, new { @class = "form-control", ng_model = "model.LastName", placeholder = "Enter LastName" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.BirthDate, new { @class = "col-sm-3 col-xs-12 control-label" })
+                                <div class="col-sm-9 col-xs-12">
+                                    <div class="col-xs-12">
+                                        <p class="input-group">
+                                            <input type="text" class="form-control" datepicker-popup="@Constants.DATE_FORMAT" ng-model="model.BirthDate" is-open="birthdateopened" min-date="'@Constants.MIN_DATE'"
+                                                   max-date="'@Constants.MAX_DATE'" datepicker-options="dateOptions" close-text="Close" placeholder="Select Date Of Birth" />
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-click="openbirthdatecalendar($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.IdNumber, new { @class = "col-sm-3 col-xs-12 control-label" })
+                                <div class="col-sm-9 col-xs-12">
+                                    <div class="col-xs-12">
+                                        @Html.TextBoxFor(model => model.IdNumber, new { @class = "form-control", ng_model = "model.IdNumber", placeholder = "Enter Id Number" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-4 col-sm-8 col-xs-12">
+                                    @Html.ValidationSummary()
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        <input type="submit" value="Search" name="btnPatientSearch" class="btn btn-primary btn-block" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-3 col-sm-2 col-xs-12">
+
+    </div>
+</div>
+<div id="SearchGridContanier" class="gridStyle" ng-grid="gridOptions" ng-show="showgrid">
+</div>
+<div ng-hide="showgrid">
+    No data to display
+</div>
+
+<div id="divEditPatientUrl" data-url="@Url.Action("EditPatient", "PatientManagement", new { area = "PatientManagement" })"></div>

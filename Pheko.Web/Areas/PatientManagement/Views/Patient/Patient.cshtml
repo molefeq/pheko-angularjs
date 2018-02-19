@@ -1,0 +1,518 @@
+﻿@using Pheko.WebPresentation.ViewModels;
+@using Pheko.WebPresentation.Utility;
+
+@model PatientViewModel
+
+@{
+    ViewBag.Title = "Patient";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section scripts{
+    <script src="@Url.Content("~/Scripts/Pheko/PhekoViewModels/patientviewmodel.js")" type="text/javascript"></script>
+}
+
+<div id="divPatientDetails" ng-controller="PatientController">
+
+    <form class="form-horizontal" id="frmSavePatient" name="frmSavePatient" method="post" novalidate>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Patient Details
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    @Html.Label("Patient Id", new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        <div class="col-xs-8">
+                            <span>{{patient.PatientId }}</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="col-xs-8">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Title, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        <div class="col-xs-8" ng-class="error('Title')">
+                            @foreach (SelectListItem title in ViewBag.Titles)
+                            {
+                                bool selected = Model.Title == title.Value;
+                                @Html.RadioButtonFor(model => model.Title, title.Value, new { ng_model = "patient.Title", ng_required = "true" }) @title.Text
+                            }
+                            <p ng-show="frmSavePatient.Title.$error.required && (frmSavePatient.Title.$dirty || submitted)" class="help-block">Title is required.</p>
+                        </div>
+                    </div>
+                    @Html.Label("Physical Address", new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        <div class="col-xs-8" ng-class="error('PhysicalAddress.Line1')">
+                            @Html.TextBoxFor(model => model.PhysicalAddress.Line1, new
+                       {
+                           @class = "form-control",
+                           ng_model = "patient.PhysicalAddress.Line1",
+                           ng_maxlength = 50
+                       })
+                            <p ng-show="frmSavePatient['PhysicalAddress.Line1'].$error.maxlength && (frmSavePatient['PhysicalAddress.Line1'].$dirty || submitted)" class="help-block">Line 1 cannot be more than 50 characters.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.FirstName, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        <div class="col-xs-8" ng-class="error('FirstName')">
+                            @Html.TextBoxFor(model => model.FirstName, new
+                       {
+                           @class = "form-control",
+                           ng_model = "patient.FirstName",
+                           ng_required = "true",
+                           ng_maxlength = 50,
+                           custom = "true"
+                       })
+                            <p ng-show="frmSavePatient.FirstName.$error.required && (frmSavePatient.FirstName.$dirty || submitted)" class="help-block">FirstName is required.</p>
+                            <p ng-show="frmSavePatient.FirstName.$error.maxlength && (frmSavePatient.FirstName.$dirty || submitted)" class="help-block">FirstName cannot be more than 50 characters.</p>
+                            <p ng-show="frmSavePatient.FirstName.$error.custom && (frmSavePatient.FirstName.$dirty || submitted)" class="help-block">{{validationmessage('FirstName')}}.</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-offset-2 col-sm-4">
+                        <div class="col-xs-8" ng-class="error('PhysicalAddress.Line2')">
+                            @Html.TextBoxFor(model => model.PhysicalAddress.Line2, new
+                       {
+                           @class = "form-control",
+                           ng_model = "patient.PhysicalAddress.Line2",
+                           ng_maxlength = 50
+                       })
+                            <p ng-show="frmSavePatient['PhysicalAddress.Line2'].$error.maxlength && (frmSavePatient['PhysicalAddress.Line2'].$dirty || submitted)" class="help-block">Line 2 cannot be more than 50 characters.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.MiddleName, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        <div class="col-xs-8" ng-class="error('MiddleName')">
+                            @Html.TextBoxFor(model => model.MiddleName, new
+                       {
+                           @class = "form-control",
+                           ng_model = "patient.MiddleName",
+                           ng_maxlength = 50
+                       })
+                            <p ng-show="frmSavePatien.MiddleName.$error.maxlength && (frmSavePatient.MiddleName.$dirty || submitted)" class="help-block">Middlename cannot be more than 50 characters.</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-offset-2 col-sm-4">
+                        <div class="col-xs-8" ng-class="error('PhysicalAddress.Suburb')">
+                            @Html.TextBoxFor(model => model.PhysicalAddress.Suburb, new
+                       {
+                           @class = "form-control",
+                           ng_model = "patient.PhysicalAddress.Suburb",
+                           ng_maxlength = 50
+                       })
+                            <p ng-show="frmSavePatient['PhysicalAddress.Suburb'].$error.maxlength && (frmSavePatient['PhysicalAddress.Suburb'].$dirty || submitted)" class="help-block">Suburb cannot be more than 50 characters.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.LastName, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        <div class="col-xs-8" ng-class="error('LastName')">
+                            @Html.TextBoxFor(model => model.LastName, new
+                       {
+                           @class = "form-control",
+                           ng_model = "patient.LastName",
+                           ng_required = "true",
+                           ng_maxlength = 50,
+                           custom = "true"
+                       })
+                            <p ng-show="frmSavePatien.LastName.$error.required && (frmSavePatient.LastName.$dirty || submitted)" class="help-block">Lastname is required.</p>
+                            <p ng-show="frmSavePatien.LastName.$error.maxlength && (frmSavePatient.LastName.$dirty || submitted)" class="help-block">Lastname cannot be more than 50 characters.</p>
+                            <p ng-show="frmSavePatient.LastName.$error.custom && (frmSavePatient.LastName.$dirty || submitted)" class="help-block">{{validationmessage('LastName')}}.</p>
+                        </div>
+                    </div>
+                    @Html.Label("Code", new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        <div class="col-xs-8" ng-class="error('PhysicalAddress.PostalCode')">
+                            @Html.TextBoxFor(model => model.PhysicalAddress.PostalCode, new
+                       {
+                           @class = "form-control",
+                           ng_model = "patient.PhysicalAddress.PostalCode",
+                           ng_maxlength = 10
+                       })
+                            <p ng-show="frmSavePatient['PhysicalAddress.PostalCode'].$error.maxlength && (frmSavePatient['PhysicalAddress.PostalCode'].$dirty || submitted)" class="help-block">Postal Code cannot be more than 10 characters.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.IDType, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        <div class="col-xs-8">
+                            @foreach (SelectListItem idType in ViewBag.IdTypes)
+                            {
+                                bool selected = Model.IDType == idType.Value;
+                                @Html.RadioButtonFor(model => model.IDType, idType.Value, new
+                           {
+                               ng_model = "patient.IDType"
+                           }) @idType.Text
+                            }
+                        </div>
+                    </div>
+                    <div class="col-sm-offset-2 col-sm-4">
+                        <div class="col-xs-8" ng-class="error('PhysicalAddress.City')">
+                            @Html.TextBoxFor(model => model.PhysicalAddress.City, new
+                       {
+                           @class = "form-control",
+                           ng_model = "patient.PhysicalAddress.City",
+                           ng_maxlength = 100
+                       })
+                            <p ng-show="frmSavePatient['PhysicalAddress.City'].$error.maxlength && (frmSavePatient['PhysicalAddress.City'].$dirty || submitted)" class="help-block">City cannot be more than 100 characters.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" id="divPatientModel_IDNumber">
+                    @Html.LabelFor(model => model.IDNumber, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        <div class="col-xs-8" ng-class="error('IDNumber')">
+                            @Html.TextBoxFor(model => model.IDNumber, new
+                       {
+                           @class = "form-control",
+                           ng_model = "patient.IDNumber",
+                           ng_maxlength = 20
+                       })
+                            <p ng-show="frmSavePatient.IDNumber.$error.maxlength && (frmSavePatient.IDNumber.$dirty || submitted)" class="help-block">Id Number cannot be more than 20 characters.</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-offset-2 col-sm-4">
+                        <div class="col-xs-8">
+                            @Html.DropDownListFor(model => model.PhysicalAddress.ProvinceId, ViewBag.Provinces as SelectList, "-- Please select a province --", new { id = "ddlPhysicalAddressProvinceId", @class = "form-control", ng_model = "patient.PhysicalAddress.ProvinceId" })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.BirthDate, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        <div class="col-xs-8" ng-class="error('BirthDate')">
+                            <p class="input-group">
+                                <input type="text" class="form-control" datepicker-popup="@Constants.DATE_FORMAT" ng-model="patient.BirthDate" is-open="opened" min-date="'@Constants.MIN_DATE'"
+                                       max-date="'@Constants.MAX_DATE'" name="BirthDate" datepicker-options="dateOptions" close-text="Close" ng-required="true" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="opencalendar($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </p>
+                            <p ng-show="frmSavePatient.BirthDate.$error.required && (frmSavePatient.BirthDate.$dirty || submitted)" class="help-block">Date Of Birth is required.</p>
+                        </div>
+                    </div>
+                    @Html.Label("Postal Address", new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        <div class="col-xs-8" ng-class="error('PostalAddress.Line1')">
+                            @Html.TextBoxFor(model => model.PostalAddress.Line1, new
+                       {
+                           @class = "form-control",
+                           ng_model = "patient.PostalAddress.Line1",
+                           ng_maxlength = 50
+                       })
+                            <p ng-show="frmSavePatient['PostalAddress.Line1'].$error.maxlength && (frmSavePatient['PostalAddress.Line1'].$dirty || submitted)" class="help-block">Address Line1 cannot be more than 50 characters.</p>
+                        </div>
+                        @Html.ValidationMessage("PostalAddress")
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Gender, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        <div class="col-xs-8" ng-class="error('Gender')">
+                            @foreach (SelectListItem genders in ViewBag.Genders)
+                            {
+                                @Html.RadioButtonFor(model => model.Gender, genders.Value, new { ng_model = "patient.Gender", ng_required = "true" }) @genders.Text
+                            }
+                            <p ng-show="frmSavePatient.Gender.$error.required && (frmSavePatient.Gender.$dirty || submitted)" class="help-block">Gender is required.</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-offset-2 col-sm-4">
+                        <div class="col-xs-8" ng-class="error('PostalAddress.Line2')">
+                            @Html.TextBoxFor(model => model.PostalAddress.Line2, new
+                       {
+                           @class = "form-control",
+                           ng_model = "patient.PostalAddress.Line2",
+                           ng_maxlength = 50
+                       })
+                            <p ng-show="frmSavePatient['PostalAddress.Line2'].$error.maxlength && (frmSavePatient['PostalAddress.Line2'].$dirty || submitted)" class="help-block">Address Line2 cannot be more than 50 characters.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.MaritalStatus, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        <div class="col-xs-8">
+                            @foreach (SelectListItem maritalStatus in ViewBag.MaritalStatuses)
+                            {
+                                bool selected = Model.MaritalStatus == maritalStatus.Value;
+                                @Html.RadioButtonFor(model => model.MaritalStatus, maritalStatus.Value, new { ng_model = "patient.MaritalStatus" }) @maritalStatus.Text
+                            }
+                        </div>
+                    </div>
+                    <div class="col-sm-offset-2 col-sm-4">
+                        <div class="col-xs-8" ng-class="error('PostalAddress.Suburb')">
+                            @Html.TextBoxFor(model => model.PostalAddress.Suburb, new
+                       {
+                           @class = "form-control",
+                           ng_model = "patient.PostalAddress.Suburb",
+                           ng_maxlength = 50
+                       })
+                            <p ng-show="frmSavePatient['PostalAddress.Suburb'].$error.maxlength && (frmSavePatient['PostalAddress.Suburb'].$dirty || submitted)" class="help-block">Suburb cannot be more than 50 characters.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.EthnicGroup, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        <div class="col-xs-8" ng-class="error('EthnicGroup')">
+                            @foreach (SelectListItem ethnicGroup in ViewBag.EthnicGroups)
+                            {
+                                bool selected = Model.EthnicGroup == ethnicGroup.Value;
+                                @Html.RadioButtonFor(model => model.EthnicGroup, ethnicGroup.Value, new { ng_model = "patient.EthnicGroup", ng_required = "true" }) @ethnicGroup.Text
+                            }
+                            <p ng-show="frmSavePatient.EthnicGroup.$error.required && (frmSavePatient.EthnicGroup.$dirty || submitted)" class="help-block">Ethnic Group is required.</p>
+                        </div>
+                    </div>
+                    @Html.Label("Code", new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        <div class="col-xs-8" ng-class="error('PostalAddress.PostalCode')">
+                            @Html.TextBoxFor(model => model.PostalAddress.PostalCode, new
+                       {
+                           @class = "form-control",
+                           ng_model = "patient.PostalAddress.PostalCode",
+                           ng_maxlength = 10
+                       })
+                            <p ng-show="frmSavePatient['PostalAddress.PostalCode'].$error.maxlength && (frmSavePatient['PostalAddress.PostalCode'].$dirty || submitted)" class="help-block">Postal Code cannot be more than 10 characters.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.MobileNumber, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        <div class="col-xs-8" ng-class="error('MobileNumber')">
+                            @Html.TextBoxFor(model => model.MobileNumber, new
+                       {
+                           @class = "form-control",
+                           ng_model = "patient.MobileNumber",
+                           ng_maxlength = 20
+                       })
+                            <p ng-show="frmSavePatient.MobileNumber.$error.maxlength && (frmSavePatient.MobileNumber.$dirty || submitted)" class="help-block">Mobile Number cannot be more than 20 characters.</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-offset-2 col-sm-4">
+                        <div class="col-xs-8" ng-class="error('PostalAddress.City')">
+                            @Html.TextBoxFor(model => model.PostalAddress.City, new
+                       {
+                           @class = "form-control",
+                           ng_model = "patient.PostalAddress.City",
+                           ng_maxlength = 100
+                       })
+                            <p ng-show="frmSavePatient['PostalAddress.City'].$error.maxlength && (frmSavePatient['PostalAddress.City'].$dirty || submitted)" class="help-block">City cannot be more than 100 characters.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.EmailAddress, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        <div class="col-xs-8" ng-class="error('EmailAddress')">
+                            @Html.TextBoxFor(model => model.EmailAddress, new
+                       {
+                           @class = "form-control",
+                           ng_model = "patient.EmailAddress",
+                           ng_maxlength = 100
+                       })
+                            <p ng-show="frmSavePatient.EmailAddress.$error.maxlength && (frmSavePatient.EmailAddress.$dirty || submitted)" class="help-block">Email Address cannot be more than 100 characters.</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-offset-2 col-sm-4">
+                        <div class="col-xs-8">
+                            @Html.DropDownListFor(model => model.PostalAddress.ProvinceId, ViewBag.Provinces as SelectList, "-- Please select a province --", new { id = "ddlPostalAddressProvinceId", @class = "form-control", ng_model = "patient.PostalAddress.ProvinceId" })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.HomeTelephoneNumber, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        <div class="col-xs-8" ng-class="error('HomeTelephoneNumber')">
+                            @Html.Label("(")
+                            @Html.TextBoxFor(model => model.HomeTelephoneCode, new
+                       {
+                           @class = "smallerinput form-control",
+                           ng_model = "patient.HomeTelephoneCode",
+                           ng_maxlength = 10
+                       })
+                            @Html.Label(")")
+                            @Html.TextBoxFor(model => model.HomeTelephoneNumber, new
+                       {
+                           @class = "smallinput form-control",
+                           ng_model = "patient.HomeTelephoneNumber",
+                           ng_maxlength = 20
+                       })
+                            <p ng-show="frmSavePatient.HomeTelephoneCode.$error.maxlength && (frmSavePatient.HomeTelephoneCode.$dirty || submitted)" class="help-block">Code cannot be more than 10 characters.</p>
+                            <p ng-show="frmSavePatient.HomeTelephoneNumber.$error.maxlength && (frmSavePatient.HomeTelephoneNumber.$dirty || submitted)" class="help-block">Home Telephone cannot be more than 20 characters.</p>
+                        </div>
+                    </div>
+                    @Html.LabelFor(model => model.PrefferedContactMethod, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        <div class="col-xs-8">
+                            @foreach (SelectListItem preferredContactMethod in ViewBag.PrefferedContactTypes)
+                            {
+                                bool selected = Model.PrefferedContactMethod == preferredContactMethod.Value;
+                                @Html.RadioButtonFor(model => model.PrefferedContactMethod, preferredContactMethod.Value, new
+                           {
+                               ng_model = "patient.PrefferedContactMethod",
+                           }) @preferredContactMethod.Text<br />
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.WorkTelephoneNumber, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        <div class="col-xs-8" ng-class="error('WorkTelephoneNumber')">
+                            @Html.Label("(")
+                            @Html.TextBoxFor(model => model.WorkTelephoneCode, new
+                       {
+                           @class = "smallerinput form-control",
+                           ng_model = "patient.WorkTelephoneCode",
+                           ng_maxlength = 10
+                       })
+                            @Html.Label(")")
+                            @Html.TextBoxFor(model => model.WorkTelephoneNumber, new
+                       {
+                           @class = "smallinput form-control",
+                           ng_model = "patient.WorkTelephoneNumber",
+                           ng_maxlength = 20
+                       })
+                            <p ng-show="frmSavePatient.WorkTelephoneCode.$error.maxlength && (frmSavePatient.WorkTelephoneCode.$dirty || submitted)" class="help-block">Code cannot be more than 10 characters.</p>
+                            <p ng-show="frmSavePatient.WorkTelephoneNumber.$error.maxlength && (frmSavePatient.WorkTelephoneNumber.$dirty || submitted)" class="help-block">Work Telephone cannot be more than 20 characters.</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-offset-2 col-sm-4">
+                        <div class="col-xs-8">
+                        </div>
+                    </div>
+                </div>
+                <div class="formcontent container-fluid">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.MedicalAidInd, new { @class = "col-sm-2 control-label" })
+                        <div class="col-sm-10">
+                            <div class="col-xs-8">
+                                @Html.CheckBoxFor(model => model.MedicalAidInd, new { ng_model = "patient.MedicalAidInd", ng_click = "cleanmedicalaiddetails()" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="formcontent container-fluid" ng-show="patient.MedicalAidInd">
+                    <div class="form-group" id="divMedicalAidName">
+                        @Html.LabelFor(model => model.MedicalAidName, new { @class = "col-sm-2 control-label" })
+                        <div class="col-sm-4">
+                            <div class="col-xs-8" ng-class="error('MedicalAidName')">
+                                @Html.TextBoxFor(model => model.MedicalAidName, new
+                           {
+                               @class = "form-control",
+                               ng_model = "patient.MedicalAidName",
+                               ng_maxlength = 100
+                           })
+                                <p ng-show="frmSavePatient.MedicalAidName.$error.maxlength && (frmSavePatient.MedicalAidName.$dirty || submitted)" class="help-block">Medical Aid Name cannot be more than 100 characters.</p>
+                            </div>
+                        </div>
+                        @Html.LabelFor(model => model.MedicalAidScheme, new { @class = "col-sm-2 control-label" })
+                        <div class="col-sm-4">
+                            <div class="col-xs-8" ng-class="error('MedicalAidScheme')">
+                                @Html.TextBoxFor(model => model.MedicalAidScheme, new
+                           {
+                               @class = "form-control",
+                               ng_model = "patient.MedicalAidScheme",
+                               ng_maxlength = 100
+                           })
+                                <p ng-show="frmSavePatient.MedicalAidScheme.$error.maxlength && (frmSavePatient.MedicalAidScheme.$dirty || submitted)" class="help-block">Medical Aid Scheme cannot be more than 100 characters.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" id="divMedicalAidNumber">
+                        @Html.LabelFor(model => model.MedicalAidNumber, new { @class = "col-sm-2 control-label" })
+                        <div class="col-sm-4">
+                            <div class="col-xs-8" ng-class="error('MedicalAidNumber')">
+                                @Html.TextBoxFor(model => model.MedicalAidNumber, new
+                           {
+                               @class = "form-control",
+                               ng_model = "patient.MedicalAidNumber",
+                               ng_maxlength = 100
+                           })
+                                <p ng-show="frmSavePatient.MedicalAidNumber.$error.maxlength && (frmSavePatient.MedicalAidNumber.$dirty || submitted)" class="help-block">Medical Aid Number cannot be more than 100 characters.</p>
+                            </div>
+                        </div>
+                        @Html.LabelFor(model => model.PrincipalMemberInd, new { @class = "col-sm-2 control-label" })
+                        <div class="col-sm-4">
+                            <div class="col-xs-8" ng-class="error('PrincipalMemberInd')">
+                                @Html.CheckBoxFor(model => model.PrincipalMemberInd, new { ng_model = "patient.PrincipalMemberInd", custom = "true" })
+                                <p ng-show="frmSavePatient.PrincipalMemberInd.$error.custom && (frmSavePatient.PrincipalMemberInd.$dirty || submitted)" class="help-block">{{validationmessage('PrincipalMemberInd')}}.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="formcontent container-fluid">
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10 alert alert-danger" ng-show="hassummaryerrors()">
+                            <div class="col-sm-offset-5 col-sm-7">
+                                <ul custom-summary="true" ng-class="summaryerror()"></ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10 alert alert-success" ng-show="issuccessfulsaved">
+                            <div class="col-sm-offset-5 col-sm-7">
+                                Successfully saved.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group buttons">
+                        <div class="col-sm-offset-5 col-sm-7">
+                            <input type="submit" value="Save" id="btnSave" name="Command" class="btn btn-primary btn-sm"
+                                   ng-click="savepatient('@Url.Action("SavePatient", "Patient", new { area = "PatientManagement" })', 'frmSavePatient','divPatientDetails')" />
+                            <input type="submit" value="Print" id="btnPrint" name="Command" class="btn btn-primary btn-sm"
+                                   ng-click="printpatientschedule('@Url.Action("PrintPatientSchedule", "Patient", new { area = "PatientManagement" })','@Url.Action("SavePatient", "Patient", new { area = "PatientManagement" })', 'frmSavePatient','divPatientDetails')" />
+                            <input type="submit" value="Create Consultation" id="btnCreateConsultation" name="Command" class="btn btn-primary btn-sm"
+                                   ng-click="printpatientschedule('@Url.Action("PatientConsultation", "PatientConsultation", new { area = "PatientManagement" })','@Url.Action("SavePatient", "Patient", new { area = "PatientManagement" })', 'frmSavePatient','divPatientDetails')" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </form>
+
+    <div ng-show="patient.MedicalAidInd" class="container-fluid">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <a data-dialog-title="Patient Medical Aid Dependency" class="ShowPopupForm" ng-click="addmedicalaiddependancy('patientdependancydialog', '@Url.Action("PatientMedicalAidDependancyView", "Patient", new { area = "PatientManagement" })')"><span class="glyphicon glyphicon-plus"></span></a>
+                Medical Aid Dependancies Details
+            </div>
+            <div class="panel-body container-fluid">
+                <div class="col-md-offset-1 col-md-3" ng-repeat="patientmedicaldependancy in patientmedicalaiddepandancies">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <a data-dialog-title="Patient Medical Aid Dependency" class="EditPopupForm glyphicon glyphicon-pencil" ng-click="editmedicalaiddependancy(patientmedicaldependancy, 'patientdependancydialog')"></a>
+                            <a data-dialog-title="Patient Medical Aid Dependency" class="DeletePopupForm glyphicon glyphicon-remove" ng-click="deletemedicalaiddependancy(patientmedicaldependancy, '@Url.Action("DeletePatientMedicalAidDependancy", "Patient", new { area = "PatientManagement" })')"></a>
+                        </div>
+                        <div class="panel-body">
+                            <div>{{patientmedicaldependancy.FirstFullName}}</div>
+                            <div>{{patientmedicaldependancy.BirthDate}}</div>
+                            <div>{{patientmedicaldependancy.Relationship}}</div>
+                            <div>{{patientmedicaldependancy.MedicalAidCode}}</div>
+                            <div><b>Principal Member: </b><span>{{isdependancyprincipalmember(patientmedicaldependancy)}}</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/ng-template" id="patientdependancymodal">
+        @Html.Partial("PatientMedicalAidDependancy", new PatientMedicalAidDependancyViewModel());
+    </script>
+</div>
+
+<div id="divGetPatientViewModelUrl" data-url="@Url.Action("GetPatient", "Patient", new { area = "PatientManagement" })"></div>
+<div id="divSavePatientUrl" data-url="@Url.Action("SavePatient", "Patient", new { area = "PatientManagement" })"></div>
+

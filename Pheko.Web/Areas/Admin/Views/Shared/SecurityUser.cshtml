@@ -1,0 +1,223 @@
+﻿@using Pheko.WebPresentation.ViewModels;
+@using Pheko.WebPresentation.Utility;
+
+@model SecurityUserViewModel
+
+<div class="modal-header">
+    <h4 class="modal-title" id="ModalHeader">Employee</h4>
+</div>
+
+<div class="modal-body">
+    <form id="frmSecurityUser" name="frmSecurityUser" class="form-horizontal" method="post" novalidate>
+        <div class="container-fluid">
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.UserName, new { @class = "col-sm-4 control-label" })
+                <div class="col-sm-8" ng-class="error('UserName')">
+                    @Html.TextBoxFor(model => model.UserName, new
+               {
+                   @class = "form-control input-sm",
+                   ng_model = "securityuser.UserName",
+                   placeholder = "Enter Username.",
+                   ng_maxlength = 50,
+                   ng_pattern = "/^([A-Za-z0-9]*)$/",
+                   ng_required = "true"
+               })
+                    <p ng-show="frmSecurityUser.UserName.$error.required && (frmSecurityUser.UserName.$dirty || submitted)" class="help-block">UserName is required.</p>
+                    <p ng-show="frmSecurityUser.UserName.$error.maxlength && (frmSecurityUser.UserName.$dirty || submitted)" class="help-block">UserName is cannot be more than 50 characters.</p>
+                    <p ng-show="frmSecurityUser.UserName.$error.pattern && (frmSecurityUser.UserName.$dirty || submitted)" class="help-block">UserName can be number and or charcters only.</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Title, new { @class = "col-sm-4 control-label" })
+                <div class="col-sm-8" ng-class="error('Title')">
+                    @foreach (SelectListItem title in ViewBag.Titles)
+                    {
+                        @Html.RadioButtonFor(model => model.Title, title.Value, new { ng_model = "securityuser.Title", ng_required = "true" }) @title.Text
+                    }
+
+                    <p ng-show="frmSecurityUser.Title.$error.required && (frmSecurityUser.Title.$dirty || submitted)" class="help-block">Title is required.</p>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.FirstName, new { @class = "col-sm-4 control-label" })
+                <div class="col-sm-8" ng-class="error('FirstName')">
+                    @Html.TextBoxFor(model => model.FirstName, new
+               {
+                   @class = "form-control input-sm",
+                   ng_model = "securityuser.FirstName",
+                   placeholder = "Enter FirstName.",
+                   ng_maxlength = 50,
+                   ng_required = "true"
+               })
+                    <p ng-show="frmSecurityUser.FirstName.$error.required && (frmSecurityUser.FirstName.$dirtyv|| submitted)" class="help-block">FirstName is required.</p>
+                    <p ng-show="frmSecurityUser.FirstName.$error.maxlength && (frmSecurityUser.FirstName.$dirty || submitted)" class="help-block">FirstName is cannot be more than 50 characters.</p>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.LastName, new { @class = "col-sm-4 control-label" })
+                <div class="col-sm-8" ng-class="error('LastName')">
+                    @Html.TextBoxFor(model => model.LastName, new
+               {
+                   @class = "form-control input-sm",
+                   ng_model = "securityuser.LastName",
+                   placeholder = "Enter LastName.",
+                   ng_maxlength = 50,
+                   ng_required = "true"
+               })
+                    <p ng-show="frmSecurityUser.LastName.$error.required && (frmSecurityUser.LastName.$dirty || submitted)" class="help-block">LastName is required.</p>
+                    <p ng-show="frmSecurityUser.LastName.$error.maxlength && (frmSecurityUser.LastName.$dirty || submitted)" class="help-block">LastName is cannot be more than 50 characters.</p>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.IDNumber, new { @class = "col-sm-4 control-label" })
+                <div class="col-sm-8" ng-class="error('IDNumber')">
+                    @Html.TextBoxFor(model => model.IDNumber, new
+               {
+                   @class = "form-control input-sm",
+                   ng_model = "securityuser.IDNumber",
+                   placeholder = "Enter ID Or Passport Number.",
+                   ng_pattern = "/^([0-9]{0,20})$/"
+               })
+                    <p ng-show="frmSecurityUser.IDNumber.$error.pattern && (frmSecurityUser.IDNumber.$dirty || submitted)" class="help-block">ID Or Passport Number must numbers no more than 20 digits.</p>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.BirthDate, new { @class = "col-sm-4 control-label" })
+                <div class="col-sm-8" ng-class="error('BirthDate')">
+                    <div class="radio">
+                        <p class="input-group">
+                            <input type="text" class="form-control" datepicker-popup="@Constants.DATE_FORMAT" ng-model="securityuser.BirthDate" is-open="birthdateopened" min-date="'@Constants.MIN_DATE'" name="BirthDate"
+                                   max-date="'@Constants.MAX_DATE'" datepicker-options="dateOptions" close-text="Close" placeholder="Select Date Of Birth" ng-required="true"
+                                   ng-disabled="true" />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="openbirthdatecalendar($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </p>
+                    </div>
+                    <p ng-show="frmSecurityUser.BirthDate.$error.required && (frmSecurityUser.BirthDate.$dirty || submitted)" class="help-block">Date Of Birth is required.</p>
+                    @*<p ng-show="frmSecurityUser.BirthDate.$error.pattern && (frmSecurityUser.BirthDate.$dirty || submitted)" class="help-block">Date Of Birth must be in this format 25/06/2013 please use calendar to select date.</p>*@
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Gender, new { @class = "col-sm-4 control-label" })
+                <div class="col-sm-8" ng-class="error('Gender')">
+                    @foreach (SelectListItem gender in ViewBag.Genders)
+                    {
+                        @Html.RadioButtonFor(model => model.Gender, gender.Value, new { ng_model = "securityuser.Gender", ng_required = "true" }) @gender.Text
+                    }
+                    <p ng-show="frmSecurityUser.Gender.$error.required && (frmSecurityUser.Gender.$dirty|| submitted)" class="help-block">Gender is required.</p>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.WorkTelephoneNumber, new { @class = "col-sm-4 control-label" })
+                <div class="col-sm-8" ng-class="error('Title')">
+                    <div class="col-xs-8">
+                        @Html.Label("(")
+                        @Html.TextBoxFor(model => model.WorkTelephoneCode, new
+                   {
+                       @class = "smallerinput form-control",
+                       ng_model = "securityuser.WorkTelephoneCode",
+                       ng_pattern = "/^([0-9]{3,5})$/",
+                       placeholder = "Code"
+                   })
+                        @Html.Label(")")
+                        @Html.TextBoxFor(model => model.WorkTelephoneNumber, new
+                   {
+                       @class = "smallinput form-control",
+                       ng_model = "securityuser.WorkTelephoneNumber",
+                       ng_pattern = "/^([0-9]{0,20})$/",
+                       placeholder = "Number"
+                   })
+                        <p ng-show="frmSecurityUser.WorkTelephoneNumber.pattern && (frmSecurityUser.WorkTelephoneNumber.$dirty|| submitted)" class="help-block">Work Telephone Code must be like 011 or +2731.</p>
+                        <p ng-show="frmSecurityUser.WorkTelephoneCode.pattern && (frmSecurityUser.WorkTelephoneCode.$dirty|| submitted)" class="help-block">Work Telephone Number must be only numbers of 7 digits.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.FaxNumber, new { @class = "col-sm-4 control-label" })
+                <div class="col-sm-8" ng-class="error('Title')">
+                    <div class="col-xs-8">
+                        @Html.Label("(")
+                        @Html.TextBoxFor(model => model.FaxCode, new
+                   {
+                       @class = "smallerinput form-control",
+                       ng_model = "securityuser.FaxCode",
+                       ng_pattern = "/^([0-9]{0,20})$/",
+                       placeholder = "Code"
+                   })
+                        @Html.Label(")")
+                        @Html.TextBoxFor(model => model.FaxNumber, new
+                   {
+                       @class = "smallinput form-control",
+                       ng_model = "securityuser.FaxNumber",
+                       ng_pattern = "/^([0-9]{0,20})$/",
+                       placeholder = "Number"
+                   })
+                        <p ng-show="frmSecurityUser.FaxCode.pattern && (frmSecurityUser.FaxCode.$dirty|| submitted)" class="help-block">Fax Code must be like 011 or +2731.</p>
+                        <p ng-show="frmSecurityUser.FaxNumber.pattern && (frmSecurityUser.FaxNumber.$dirty|| submitted)" class="help-block">Fax Number must be only numbers of 7 digits.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.MobileNumber, new { @class = "col-sm-4 control-label" })
+                <div class="col-sm-8" ng-class="error('IDNumber')">
+                    @Html.TextBoxFor(model => model.MobileNumber, new
+               {
+                   @class = "form-control input-sm",
+                   ng_model = "securityuser.MobileNumber",
+                   ng_pattern = "/^([0-9]{0,20})$/",
+                   placeholder = "Enter Mobile Number"
+               })
+                    <p ng-show="frmSecurityUser.MobileNumber.pattern && (frmSecurityUser.MobileNumber.$dirty|| submitted)" class="help-block">Mobile Number must be like +27846758890 or 0761234567.</p>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.EmailAddress, new { @class = "col-sm-4 control-label" })
+                <div class="col-sm-8" ng-class="error('EmailAddress')">
+                    @Html.TextBoxFor(model => model.EmailAddress, new
+               {
+                   @class = "form-control input-sm",
+                   ng_model = "securityuser.EmailAddress",
+                   ng_pattern = "/^([0-9]{0,20})$/",
+                   placeholder = "Enter Mobile Number"
+               })
+                    <p ng-show="frmSecurityUser.EmailAddress.pattern && (frmSecurityUser.EmailAddress.$dirty|| submitted)" class="help-block">Incorrect Email Addresss.</p>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.EmployeeNumber, new { @class = "col-sm-4 control-label" })
+                <div class="col-sm-8" ng-class="error('EmployeeNumber')">
+                    @Html.TextBoxFor(model => model.EmployeeNumber, new
+               {
+                   @class = "form-control input-sm",
+                   ng_model = "securityuser.EmployeeNumber",
+                   ng_pattern = "/^([0-9]{0,20})$/",
+                   placeholder = "Enter Employee Number"
+               })
+                    <p ng-show="frmSecurityUser.EmployeeNumber.pattern && (frmSecurityUser.EmployeeNumber.$dirty|| submitted)" class="help-block">EmployeeNumber must be at 5 digits.</p>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.SecurityUserRoleId, new { @class = "col-sm-4 control-label" })
+                <div class="col-sm-8" ng-class="error('SecurityUserRoleId')">
+                    @Html.DropDownListFor(model => model.SecurityUserRoleId, ViewBag.SecurityUserRoles as SelectList, "-- Please select a employee type --", new
+               {
+                   @class = "form-control",
+                   ng_model = "securityuser.SecurityUserRoleId",
+                   ng_required = "true",
+                   placeholder = "Select Employee Number"
+               })
+                    @Html.ValidationMessageFor(model => model.SecurityUserRoleId)
+                    <p ng-show="frmSecurityUser.SecurityUserRoleId.$error.required && (frmSecurityUser.SecurityUserRoleId.$dirty|| submitted)" class="help-block">Employee Type is required.</p>
+                </div>
+            </div>           <div class="form-group">
+                <div class="col-sm-offset-4 col-sm-8">
+                    <input type="submit" value="Save" id="btnSaveEmployee" class="btn btn-primary btn-sm" ng-click="saveemployee('@Url.Action("SaveUser", "UserAdministration", new { area = "Admin" })')" />
+                    <input type="submit" value="Cancel" id="btnCancelEmployee" class="btn btn-primary btn-sm" ng-click="cancel()" />
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

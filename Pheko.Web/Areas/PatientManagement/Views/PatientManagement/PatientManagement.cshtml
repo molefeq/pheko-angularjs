@@ -1,0 +1,31 @@
+﻿@using Pheko.WebPresentation.ViewModels;
+
+@{
+    ViewBag.Title = "PatientManagement";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section styles{
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/ng-grid.css")" />
+}
+@section scripts{
+    <script src="@Url.Content("~/Scripts/ng-grid.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/Pheko/PhekoViewModels/patientmanagementviewmodel.js")" type="text/javascript"></script>
+}
+<div ng-controller="SearchPatientController">
+    <div>
+        <button type="button" class="btn btn-primary" aria-label="Left Align" value="Create Patient" ng-click="createpatient()">
+            <span class=" glyphicon glyphicon-plus" aria-hidden="true">
+            </span> Create Patient
+        </button>
+    </div>
+
+    <div>
+        @Html.Partial("_SearchPatient", new SearchPatientViewModel())
+    </div>
+
+    <script type="text/ng-template" id="createpatientmodal">
+        @Html.Partial("_CreatePatient", new CreatePatientViewModel())
+    </script>
+
+</div>
+

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Pheko.Common.UtilityComponent" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Pheko.Common.UtilityComponent" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:53085/PhekoService.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/Pheko.Common.Enums" />
+  <xs:complexType name="ArrayOfFieldError">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="FieldError" nillable="true" type="tns:FieldError" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfFieldError" nillable="true" type="tns:ArrayOfFieldError" />
+  <xs:complexType name="FieldError">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ErrorMessage" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="FieldName" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FieldError" nillable="true" type="tns:FieldError" />
+  <xs:complexType name="ModelPager">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="IncludeAll" type="xs:boolean" />
+      <xs:element minOccurs="0" name="OrderColumn" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PageIndex" type="xs:int" />
+      <xs:element minOccurs="0" name="PageSize" type="xs:int" />
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/Pheko.Common.Enums" minOccurs="0" name="SortOrder" type="q1:SortOrder" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ModelPager" nillable="true" type="tns:ModelPager" />
+</xs:schema>

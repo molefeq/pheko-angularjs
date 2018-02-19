@@ -1,0 +1,64 @@
+﻿@using Pheko.WebPresentation.ViewModels;
+@using Pheko.WebPresentation.Utility;
+
+@model PatientConsultationViewModel
+
+<div class="modal-header">
+    <h4 class="modal-title" id="ModalHeader">Patient Consultation</h4>
+</div>
+
+<div class="modal-body">
+    <form class="form-horizontal" id="frmPatientConsultation" name="frmPatientConsultation" method="post" novalidate>
+        <div class="container-fluid">
+            <div class="form-group">
+                @Html.LabelFor(model => model.DoctorId, new { @class = "col-sm-4 control-label" })
+                <div class="col-sm-8" ng-class="error('DoctorId')">
+                    <div class="radio">
+                        @Html.DropDownListFor(model => model.DoctorId, ViewBag.Doctors as SelectList, "-- Please select a doctor --", new
+                   {
+                       @class = "form-control",
+                       ng_model = "patientconsultation.DoctorId",
+                       ng_required = "true"
+                   })
+                        <p ng-show="frmPatientConsultation.DoctorId.$error.required && (frmPatientConsultation.DoctorId.$dirty || submitted)" class="help-block">Doctor is required.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.StartDate, new { @class = "col-sm-4 control-label" })
+                <div class="col-sm-8" ng-class="error('StartDate')">
+                    <p class="input-group">
+                        <input type="text" class="form-control" datepicker-popup="@Constants.DATE_FORMAT" ng-model="patientconsultation.StartDate" is-open="startdateopened" min-date="'@Constants.MIN_DATE'"
+                               max-date="'@Constants.MAX_DATE'" datepicker-options="dateOptions" close-text="Close" ng-required="true" name="StartDate" />
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="openstartdatecalendar($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                    </p>
+                    <p ng-show="frmPatientConsultation.StartDate.$error.required && (frmPatientConsultation.StartDate.$dirty || submitted)" class="help-block">Start Date is required.</p>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.EndDate, new { @class = "col-sm-4 control-label" })
+                <div class="col-sm-8">
+                    <p class="input-group" ng-class="error('EndDate')">
+                        <input type="text" class="form-control" datepicker-popup="@Constants.DATE_FORMAT" ng-model="patientconsultation.EndDate" is-open="enddateopened" min-date="'@Constants.MIN_DATE'"
+                               max-date="'@Constants.MAX_DATE'" datepicker-options="dateOptions" close-text="Close" name="EndDate" />
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="openenddatecalendar($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                    </p>
+                    <p ng-show="frmPatientConsultation.EndDate.$error.required && (frmPatientConsultation.EndDate.$dirty || submitted)" class="help-block">End Date is required.</p>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <div class="form-group">
+        <div class="col-sm-offset-4 col-sm-8">
+            <input type="submit" value="Save" id="btnSavePatientConsultation" class="btn btn-primary btn-sm"
+                   ng-click="savepatientconsultation('frmPatientConsultation', '@Url.Action("SavePatientConsultation", "PatientConsultation", new { area = "PatientManagement" })')" />
+            <input type="submit" value="Cancel" id="btnCancelPatientConsultation" class="btn btn-primary btn-sm" ng-click="cancel()" />
+        </div>
+    </div>
+</div>

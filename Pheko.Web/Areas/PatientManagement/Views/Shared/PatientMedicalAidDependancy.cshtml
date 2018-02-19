@@ -1,0 +1,129 @@
+﻿@using Pheko.WebPresentation.ViewModels;
+@using Pheko.WebPresentation.Utility;
+
+@model PatientMedicalAidDependancyViewModel
+
+@{
+    string saveUrl = @Url.Action("SavePatientMedicalAidDependancy", "Patient");
+}
+
+
+<div class="modal-header">
+    <h4 class="modal-title" id="ModalHeader">Medical Aid Dependancy</h4>
+</div>
+
+<div class="modal-body">
+    <form class="form-horizontal" id="frmSavePatientMedicalAidDependancy" name="frmSavePatientMedicalAidDependancy" method="post" novalidate>
+        <div class="container-fluid">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Title, new { @class = "col-sm-4 control-label" })
+                <div class="col-sm-8" ng-class="error('Title')">
+                    <div class="radio">
+                        @foreach (SelectListItem title in ViewBag.Titles)
+                        {
+                            bool selected = Model.Title == title.Value;
+                            @Html.RadioButtonFor(model => model.Title, title.Value, new
+                       {
+                           ng_model = "patientmedicalaiddepandancy.Title",
+                           ng_required = "true"
+                       }) @title.Text
+                        }
+                        <p ng-show="frmSavePatientMedicalAidDependancy.Title.$error.required && (frmSavePatientMedicalAidDependancy.Title.$dirty || submitted)" class="help-block">Title is required.</p>
+
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.FirstFullName, new { @class = "col-sm-4 control-label" })
+                <div class="col-sm-8" ng-class="error('FirstFullName')">
+                    @Html.TextBoxFor(model => model.FirstFullName, new
+               {
+                   @class = "form-control input-sm",
+                   ng_model = "patientmedicalaiddepandancy.FirstFullName",
+                   ng_required = "true",
+                   ng_maxlength = 100
+               })
+                    <p ng-show="frmSavePatientMedicalAidDependancy.FirstFullName.$error.required && (frmSavePatientMedicalAidDependancy.FirstFullName.$dirty || submitted)" class="help-block">Firstnames are required.</p>
+                    <p ng-show="frmSavePatientMedicalAidDependancy.FirstFullName.$error.maxlength && (frmSavePatientMedicalAidDependancy.FirstFullName.$dirty || submitted)" class="help-block">Firstnames cannot be more than 100 characters.</p>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.LastName, new { @class = "col-sm-4 control-label" })
+                <div class="col-sm-8" ng-class="error('LastName')">
+                    @Html.TextBoxFor(model => model.LastName, new
+               {
+                   @class = "form-control input-sm",
+                   ng_model = "patientmedicalaiddepandancy.LastName",
+                   id = "MedicalDependancy_LastName",
+                   ng_required = "true",
+                   ng_maxlength = 50
+               })
+                    <p ng-show="frmSavePatientMedicalAidDependancy.LastName.$error.required && (frmSavePatientMedicalAidDependancy.LastName.$dirty || submitted)" class="help-block">Lastname is required.</p>
+                    <p ng-show="frmSavePatientMedicalAidDependancy.LastName.$error.maxlength && (frmSavePatientMedicalAidDependancy.LastName.$dirty || submitted)" class="help-block">Lastname cannot be more than 50 characters.</p>
+
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.BirthDate, new { @class = "col-sm-4 control-label" })
+                <div class="col-sm-8">
+                    <p class="input-group">
+                        <input type="text" class="form-control" datepicker-popup="@Constants.DATE_FORMAT" ng-model="patientmedicalaiddepandancy.BirthDate" is-open="opened" min-date="'@Constants.MIN_DATE'"
+                               max-date="'@Constants.MAX_DATE'" datepicker-options="dateOptions" close-text="Close" />
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="opencalendar($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                    </p>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Relationship, new { @class = "col-sm-4 control-label" })
+                <div class="col-sm-8" ng-class="error('Relationship')">
+                    <div class="radio">
+                        @foreach (SelectListItem relationship in ViewBag.Relationships)
+                        {
+                            @Html.RadioButtonFor(model => model.Relationship, relationship.Value, new
+                       {
+                           ng_model = "patientmedicalaiddepandancy.Relationship",
+                           ng_required = "true"
+                       }) @relationship.Text
+                        }
+                        <p ng-show="frmSavePatientMedicalAidDependancy.Relationship.$error.required && (frmSavePatientMedicalAidDependancy.Relationship.$dirty || submitted)" class="help-block">Relationship is required.</p>
+
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.MedicalAidCode, new { @class = "col-sm-4 control-label" })
+                <div class="col-sm-8" ng-class="error('MedicalAidCode')">
+                    @Html.TextBoxFor(model => model.MedicalAidCode, new
+               {
+                   @class = "form-control input-sm",
+                   ng_model = "patientmedicalaiddepandancy.MedicalAidCode",
+                   id = "MedicalDependancy_MedicalAidCode",
+                   ng_required = "true",
+                   ng_maxlength = 20
+               })
+                    <p ng-show="frmSavePatientMedicalAidDependancy.MedicalAidCode.$error.required && (frmSavePatientMedicalAidDependancy.MedicalAidCode.$dirty || submitted)" class="help-block">Medical Aid Code is required.</p>
+                    <p ng-show="frmSavePatientMedicalAidDependancy.MedicalAidCode.$error.maxlength && (frmSavePatientMedicalAidDependancy.MedicalAidCode.$dirty || submitted)" class="help-block">Medical Aid Code cannot be more than 20 characters.</p>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.PrincipalInd, new { @class = "col-sm-4 control-label" })
+                <div class="col-sm-8">
+                    <div class="checkbox">
+                        @Html.CheckBoxFor(model => model.PrincipalInd, new { ng_model = "patientmedicalaiddepandancy.PrincipalInd", id = "MedicalDependancy_PrincipalInd" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <div class="form-group">
+        <div class="col-sm-offset-4 col-sm-8">
+            <input type="submit" value="Save" id="btnSaveMedicalAidDependancy" class="btn btn-primary btn-sm"
+                   ng-click="savemedicalaiddependancy('frmSavePatientMedicalAidDependancy', '@Url.Action("SavePatientMedicalAidDependancy", "Patient")')" />
+            <input type="submit" value="Cancel" id="btnCancelMedicalAidDependancy" class="btn btn-primary btn-sm" ng-click="cancel()" />
+        </div>
+    </div>
+</div>

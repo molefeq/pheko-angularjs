@@ -1,0 +1,19 @@
+﻿@using Pheko.WebPresentation.ViewModels;
+
+@model PatientPastMedicalHistoryViewModel
+
+<div class="panel panel-primary">
+
+    <div class="panel-body">
+        <div class="formcontent container-fluid" ng-repeat="patientpastmedicalhistory in patientpastmedicalhistories">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">{{patientpastmedicalhistory.PastMedicalHistory_Name}}</label>
+                    <div class="col-sm-10">
+                        @Html.TextAreaFor(model => model.PastMedicalHistoryValue, new { @class = "form-control", ng_model = "patientpastmedicalhistory.PastMedicalHistoryValue" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

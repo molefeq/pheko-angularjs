@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/bootstrap/css")
+    @RenderSection("styles", required: false)
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap/js")
+    @Scripts.Render("~/bundles/pheko/base")
+    @RenderSection("scripts", required: false)
+</head>
+<body ng-app="PhekoApp">
+    <header class="container-fluid">
+        <div class="container-fluid">
+            <a href="@Url.Action("Login","Home")"><img src="~/Content/images/cureware_logo.jpg" alt="Cureware Logo" height="80" /></a>
+        </div>
+        <div class="menucontainer container-fluid">
+            @if (IsRequestAuthenticated)
+            {
+                @Html.Partial("_LayoutMenu")
+            }
+        </div>
+        <div class="divLine container-fluid"></div>
+        @if (IsRequestAuthenticated)
+        {
+            <div class="container-fluid" style="margin-bottom: 10px;">
+                <div class="row">
+                    <div id="currentuserdetails" class="col-sm-4 col-xs-12">
+                        <span id="loginDetails" class="pull-right">
+                            @("Logged in as " + UserDisplayName)  @Html.ActionLink("Logout", "Logout", "Home", new { area = "" }, null)
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+        }
+    </header>
+
+    <div class="main container-fluid">
+        @RenderBody()
+    </div>
+    <footer class="container-fluid">
+        <div class="divLine container-fluid"></div>
+        <p>&copy; @DateTime.Now.Year - Pheko Administration</p>
+    </footer>
+</body>
+</html>

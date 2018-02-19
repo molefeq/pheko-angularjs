@@ -1,0 +1,47 @@
+﻿@using Pheko.WebPresentation.ViewModels;
+
+@model CreatePatientViewModel
+
+<div class="modal-header">
+    <h4 class="modal-title" id="ModalHeader">Create Patient</h4>
+</div>
+
+<div class="modal-body">
+    <form id="frmPatientCreate" name="frmPatientCreate" class="form-horizontal" method="post" ng-submit="createpatient('@Url.Action("CreatePatient", "PatientManagement", new { area = "PatientManagement" })')" novalidate>
+        <div class="container-fluid">
+            <div class="form-group">
+                @Html.LabelFor(model => model.FirstName, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-10" ng-class="error('FirstName')">
+                    <div class=" col-xs-12">
+                        @Html.TextBoxFor(model => model.FirstName, new
+                   {
+                       @class = "form-control",
+                       ng_model = "patient.FirstName",
+                       id = "CreatePatientFirstName",
+                       placeholder = "Enter FirstName",
+                       ng_required = "true"
+                   })
+                        <p ng-show="frmPatientCreate.FirstName.$error.required && (frmPatientCreate.FirstName.$dirty || submitted)" class="help-block">FirstName is required.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.LastName, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-10" ng-class="error('LastName')">
+                    <div class="col-xs-12">
+                        @Html.TextBoxFor(model => model.LastName, new { @class = "form-control", ng_model = "patient.LastName", id = "CreatePatientLastName", placeholder = "Enter LastName", ng_required = "true" })
+                        <p ng-show="frmPatientCreate.LastName.$error.required && (frmPatientCreate.LastName.$dirty || submitted)" class="help-block">LastName is required.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <div class="col-xs-12" style="float:right;">
+                        <input type="submit" value="Create" name="btnCreatePatient" class="btn btn-primary btn-sm" />
+                        <input type="submit" value="Cancel" class="btn btn-primary btn-sm" ng-click="cancel()" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

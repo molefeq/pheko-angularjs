@@ -1,0 +1,27 @@
+﻿@using Pheko.WebPresentation.ViewModels;
+
+@model PatientDeseaseScreeningViewModel
+
+<div class="container-fluid">
+    <div class="form-group">
+        @Html.Label("Desease Screenings", new { @class = "col-sm-2 control-label" })
+        <div class="col-sm-10">
+            <div class="col-md-4" ng-repeat="patientdeseasescreening in patientdeseasescreenings">
+                <table style="margin: 2px; width: 100%;">
+                    <tr>
+                        <td style="width: 40%">
+                            <label>
+                                <input type="checkbox" class="cbYearOfScreening" ng-model="patientdeseasescreening.SelectedInd" />
+                                <label>{{patientdeseasescreening.DeseaseScreening_Name}}</label>
+                            </label>
+                        </td>
+                        <td style="width: 60%" ng-show="patientdeseasescreening.SelectedInd">
+                            @Html.LabelFor(model => model.YearOfScreening)
+                            @Html.DropDownListFor(model => model.YearOfScreening, new SelectList(ViewBag.Years, "Value", "Text"), "-- Year --", new { @class = "YearSelection form-control", ng_model = "patientdeseasescreening.YearOfScreening" })
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
